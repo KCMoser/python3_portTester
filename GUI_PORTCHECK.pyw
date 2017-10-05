@@ -15,28 +15,30 @@ def show_button_action(*args):              # Action for button press created, t
     print(portList)                                         # For Testing
     logging.info('Ports being tested')                      # Log ports being tested
     logging.info(portList)                                  # Log ports being tested
+    resultText.delete("1.0", "end")                         # Clear text box (for second run)
+    #allDoneconfig(text='',font=(60))                        # Blank out the text field
+    root.update()                                           # Screen refresh
     print                                                   # For Testing
     for portNum in portList:                                # Start iterating through ports
         print(portNum+' is port being tested')              # For Testing
         sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM) # Set up socket (port) testing
         sock.settimeout(5)                                  # Reduce timeout to 5 seconds
-        time.sleep(2)                                       # Pause for 2 seconds
+        time.sleep(1)                                       # Pause for 1 second
         result = sock.connect_ex((ipAddress, int(portNum))) # Check port on IP address
         if result == 0:                                     # If open do this
             logging.info('Port ' + portNum + ' is open :)') # Log port test successful
             print ('Port '+portNum+' is open')              # For Testing
             resultText.insert(END,'Port ' + portNum + ' is open\n')     #adding output to text field and send newline 
             root.update()
-            time.sleep(2)                                   # Pause for 2 seconds
+            time.sleep(1)                                   # Pause for 1 second
         else:                                               # If closed
             logging.info('Port ' + portNum + ' is closed :(')           # Log port test successful
             print ('Port '+portNum+' is closed')            # For Testing
             resultText.insert(END,'Port ' + portNum + ' is closed\n')   #adding output to text field and send newline
             root.update()
-            time.sleep(2)                                   # Pause for 2 seconds
-    allDone=Label(root,text='Check Complete',font=(60))     # Insert a comment that program is done
-    allDone.pack()                                          # Insert a comment that program is done
-        
+            time.sleep(1)                                   # Pause for 1 second
+    allDone.config(text='Port check complete',font=(60))    # Insert a comment that program is done
+
 root=Tk()                                                   # Build standard window object called root
 logging.info('App Started')                                 # Add a logging event for App Start
 root.bind('<Return>', show_button_action)                   # Allows for button press or pressing enter to work
@@ -50,6 +52,8 @@ buttonOne=Button(root,text='Start Check',command=show_button_action)    # Button
 buttonOne.pack(padx=5,pady=5)                               # Makes button visible in GUI
 resultText=Text(root,height=6,width=25,font=(60))           # Create text box for output to be sent
 resultText.pack()                                           # Makes placeholder visible in GUI
+allDone=Label(root,text='',font=(60))                       # Insert a field and set as blank for noting when check completes
+allDone.pack()                                              # Insert a comment that program is done
                
 # Import port numbers to be tested...
 global portList                                             # Make portList globally accessible
