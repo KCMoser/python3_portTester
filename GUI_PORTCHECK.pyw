@@ -16,26 +16,26 @@ def show_button_action(*args):              # Action for button press created, t
     logging.info('Ports being tested')                      # Log ports being tested
     logging.info(portList)                                  # Log ports being tested
     resultText.delete("1.0", "end")                         # Clear text box (for second run)
-    #allDoneconfig(text='',font=(60))                        # Blank out the text field
+    allDone.config(text='',font=(60))                       # Blank out the text field
     root.update()                                           # Screen refresh
     print                                                   # For Testing
     for portNum in portList:                                # Start iterating through ports
         print(portNum+' is port being tested')              # For Testing
-        sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM) # Set up socket (port) testing
+        sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)        # Set up socket (port) testing
         sock.settimeout(5)                                  # Reduce timeout to 5 seconds
         time.sleep(1)                                       # Pause for 1 second
         result = sock.connect_ex((ipAddress, int(portNum))) # Check port on IP address
         if result == 0:                                     # If open do this
             logging.info('Port ' + portNum + ' is open :)') # Log port test successful
             print ('Port '+portNum+' is open')              # For Testing
-            resultText.insert(END,'Port ' + portNum + ' is open\n')     #adding output to text field and send newline 
-            root.update()
+            resultText.insert(END,'Port ' + portNum + ' is open\n')     # Adding output to text field and send newline 
+            root.update()                                   # Screen refresh
             time.sleep(1)                                   # Pause for 1 second
         else:                                               # If closed
             logging.info('Port ' + portNum + ' is closed :(')           # Log port test successful
             print ('Port '+portNum+' is closed')            # For Testing
-            resultText.insert(END,'Port ' + portNum + ' is closed\n')   #adding output to text field and send newline
-            root.update()
+            resultText.insert(END,'Port ' + portNum + ' is closed\n')   # Adding output to text field and send newline
+            root.update()                                   # Screen refresh
             time.sleep(1)                                   # Pause for 1 second
     allDone.config(text='Port check complete',font=(60))    # Insert a comment that program is done
 
@@ -43,8 +43,9 @@ root=Tk()                                                   # Build standard win
 logging.info('App Started')                                 # Add a logging event for App Start
 root.bind('<Return>', show_button_action)                   # Allows for button press or pressing enter to work
 root.title('Digilab Port Tester')                           # Assign title to title bar
+root.iconbitmap('digi.ico')                                 # Set icon for window
 root.geometry('600x400')                                    # Set window dimensions
-genericText=Label(root,text='Enter IP address to test below')           # Generic text for window with formatting
+genericText=Label(root,text='Enter IP address to test below',font=(60)) # Generic text for window with formatting
 genericText.pack(fill=X,padx=5,pady=5)                      # Makes text visible in GUI and fills space with formatting
 get_IP=Entry(root)                                          # Creating entry field called getIP
 get_IP.pack()                                               # Makes entry field visible in GUI

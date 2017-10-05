@@ -83,3 +83,27 @@
 10/05/2017 03:54:01 PM Port 5000 is open :)
 10/05/2017 03:54:03 PM Port 10000 is open :)
 10/05/2017 03:54:22 PM App Stopped
+10/05/2017 04:00:18 PM App Started
+10/05/2017 04:00:23 PM Checking begins
+10/05/2017 04:00:24 PM IP address being tested is 10.10.10.10
+10/05/2017 04:00:24 PM Ports being tested
+10/05/2017 04:00:24 PM ['22', '443', '1883', '5000', '10000']
+10/05/2017 04:00:30 PM Port 22 is closed :(
+10/05/2017 04:00:37 PM Port 443 is closed :(
+10/05/2017 04:00:44 PM Port 1883 is closed :(
+10/05/2017 04:00:51 PM Port 5000 is closed :(
+10/05/2017 04:00:58 PM Port 10000 is closed :(
+10/05/2017 04:01:03 PM Checking begins
+10/05/2017 04:01:03 PM IP address being tested is 10.10.10.250
+10/05/2017 04:01:03 PM Ports being tested
+10/05/2017 04:01:03 PM ['22', '443', '1883', '5000', '10000']
+10/05/2017 04:01:09 PM Port 22 is closed :(
+10/05/2017 04:01:16 PM Port 443 is closed :(
+10/05/2017 04:01:23 PM Port 1883 is closed :(
+10/05/2017 04:01:30 PM Port 5000 is closed :(
+10/05/2017 04:01:37 PM Port 10000 is closed :(
+10/05/2017 04:07:00 PM App Stopped
+10/05/2017 04:07:50 PM App Started
+10/05/2017 04:07:53 PM App Stopped
+10/05/2017 04:19:55 PM App Started
+10/05/2017 04:20:10 PM App Stopped
