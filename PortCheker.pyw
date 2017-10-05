@@ -37,14 +37,14 @@ def show_button_action(*args):              # Action for button press created, t
             resultText.insert(END,'Port ' + portNum + ' is closed\n')   # Adding output to text field and send newline
             root.update()                                   # Screen refresh
             time.sleep(1)                                   # Pause for 1 second
-    allDone.config(text='Port check complete',font=(60))    # Insert a comment that program is done
+    allDone.config(text='Port check complete',font=(60),fg='blue')    # Insert a comment that program is done
 
 root=Tk()                                                   # Build standard window object called root
 logging.info('App Started')                                 # Add a logging event for App Start
 root.bind('<Return>', show_button_action)                   # Allows for button press or pressing enter to work
 root.title('Digilab Port Tester')                           # Assign title to title bar
 root.iconbitmap('digi.ico')                                 # Set icon for window
-root.geometry('600x400')                                    # Set window dimensions
+root.geometry('500x400')                                    # Set window dimensions
 genericText=Label(root,text='Enter IP address to test below',font=(60)) # Generic text for window with formatting
 genericText.pack(fill=X,padx=5,pady=5)                      # Makes text visible in GUI and fills space with formatting
 get_IP=Entry(root)                                          # Creating entry field called getIP
@@ -53,6 +53,8 @@ buttonOne=Button(root,text='Start Check',command=show_button_action)    # Button
 buttonOne.pack(padx=5,pady=5)                               # Makes button visible in GUI
 resultText=Text(root,height=6,width=25,font=(60))           # Create text box for output to be sent
 resultText.pack()                                           # Makes placeholder visible in GUI
+spacerLine=Label(root,text='')
+spacerLine.pack()
 allDone=Label(root,text='',font=(60))                       # Insert a field and set as blank for noting when check completes
 allDone.pack()                                              # Insert a comment that program is done
                
