@@ -1,12 +1,15 @@
 import time                                                 # For pausing results and light timers
 import socket                                               # For socket/port testing
+import sys                                                  # For logging system data
 import logging                                              # For logging events and outputs to file
 from tkinter import*                                        # GUI module import
 # Set up timestamp and logfile name...
 logging.basicConfig(filename='results.log', level=logging.INFO, format='%(asctime)s %(message)s', datefmt='%m/%d/%Y %I:%M:%S %p')
 
-# Set up GUI...
-def show_button_action(*args):              # Action for button press created, the *args allows enter or button click to work
+# Set up button action...
+def show_button_action(*args):                              # Action for button press created, the *args allows enter or button click to work
+    logging.info('Python version is: '+ sys.version)        # Log Python version
+    logging.info('Operating system is: '+ sys.platform)     # Log OS being run on
     logging.info('Checking begins')                         # Add a logging event to button use
     ipAddress = get_IP.get()                                # Pull IP address from entry field into ipAddress variable
     print(ipAddress + ' is IP address being tested'+'\n')   # For Testing
@@ -39,6 +42,7 @@ def show_button_action(*args):              # Action for button press created, t
             time.sleep(1)                                   # Pause for 1 second
     allDone.config(text='Port check complete',font=(60),fg='blue')    # Insert a comment that program is done
 
+# Set up GUI...
 root=Tk()                                                   # Build standard window object called root
 logging.info('App Started')                                 # Add a logging event for App Start
 root.bind('<Return>', show_button_action)                   # Allows for button press or pressing enter to work
