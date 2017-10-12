@@ -3,6 +3,7 @@ import socket                                               # For socket/port te
 import sys                                                  # For logging system data
 import logging                                              # For logging events and outputs to file
 from tkinter import*                                        # GUI module import
+import dropbox                                              # For file posting
 # Set up timestamp and logfile name...
 logging.basicConfig(filename='results.log', level=logging.INFO, format='%(asctime)s %(message)s', datefmt='%m/%d/%Y %I:%M:%S %p')
 
@@ -68,5 +69,9 @@ portList = open('portList.txt').read().splitlines()         # To open PC file
 get_IP.focus()                                              # Makes the text entry field 'active' for input
 root.mainloop()                                             #Launch window and start event listening
 logging.info('App Stopped')                                 #Add a logging event to App Stop
+# Post results
+dbx = dropbox.Dropbox('7tyT1YamQBUAAAAAAAAEtDLGvd1tWMTXfVc3ChU1f_sk0N8ol35sXzscYum-_ZiX')
+with open("results.log", "rb") as f:
+    dbx.files_upload(f.read(), '/results.log', mute = True)
 
 
