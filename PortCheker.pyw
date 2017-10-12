@@ -69,9 +69,11 @@ portList = open('portList.txt').read().splitlines()         # To open PC file
 get_IP.focus()                                              # Makes the text entry field 'active' for input
 root.mainloop()                                             #Launch window and start event listening
 logging.info('App Stopped')                                 #Add a logging event to App Stop
-# Post results
-dbx = dropbox.Dropbox('')   # Enter key
-with open("results.log", "rb") as f:
+# Post results to Dropbox
+token = open('access_token.txt','r+')                       # Open file containing access code for read/write
+access_token=token.read()                                   # Assign file contents to variable
+dbx = dropbox.Dropbox(access_token)                         # Pass access token to Dropbox
+with open("results.log", "rb") as f:                        # Start upload of file contents
     dbx.files_upload(f.read(), '/results.log', mute = True)
 
 
