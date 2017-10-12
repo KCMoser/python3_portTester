@@ -70,7 +70,7 @@ get_IP.focus()                                              # Makes the text ent
 root.mainloop()                                             #Launch window and start event listening
 logging.info('App Stopped')                                 #Add a logging event to App Stop
 # Post results
-dbx = dropbox.Dropbox('7tyT1YamQBUAAAAAAAAEtDLGvd1tWMTXfVc3ChU1f_sk0N8ol35sXzscYum-_ZiX')
+dbx = dropbox.Dropbox('')   # Enter key
 with open("results.log", "rb") as f:
     dbx.files_upload(f.read(), '/results.log', mute = True)
 
