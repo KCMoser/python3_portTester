@@ -4,7 +4,7 @@ import sys                                                  # For logging system
 import subprocess                                           # For pinging
 import logging                                              # For logging events and outputs to file
 from tkinter import*                                        # GUI module import
-import dropbox                                              # For file posting
+import dropbox                                              # For file posting online
 # Set up timestamp and logfile name...
 logging.basicConfig(filename='results.log', level=logging.INFO, format='%(asctime)s %(message)s', datefmt='%m/%d/%Y %I:%M:%S %p')
 
@@ -15,39 +15,39 @@ def show_button_action(*args):                              # Action for button 
     logging.info('Checking begins')                         # Add a logging event to button use
     ipAddress = get_IP.get()                                # Pull IP address from entry field into ipAddress variable
     logging.info('IP address being tested is ' + ipAddress) # Log IP address being tested
-    logging.info('Ports being tested')                      # Log ports being tested
-    logging.info(portList)                                  # Log ports being tested
     resultText.delete("1.0", "end")                         # Clear text box (for second run)
     pingLine.config(text='', font=(60))                     # Blank out Ping results line
     allDone.config(text='',font=(60))                       # Blank out the text field
     root.update()                                           # Screen refresh
     os_name=sys.platform                                    # Assign OS to variable
-    from os import system as system_call                    # Execute a shell command
-    # Set parameters as function of OS for pinging
+# Set parameters as function of OS for pinging
     if os_name=="win32":
         options=str('-n 1')
     else:
         options=str('-c 1')
-    # Pinging
+# Pinging
     pingresult=subprocess.getoutput('ping' +' '+ ipAddress+' '+ options)
     if 'unreachable' in pingresult:
-        print(ipAddress+ ' is Offline')
-        pingLine.config(text=ipAddress+' is Offline', font=(60), fg='red')
-        logging.info(ipAddress+' is Offline')
-        sys.exit(0)                                         # Stop program if IP does not ping
-        logging.info('App Stopped')                         #Add a logging event to App Stop 
+        pingLine.config(text=ipAddress+' is offline', font=(60), fg='red')
+        allDone.config(text='App is closing',font=(60))
+        logging.info(ipAddress+' is offline, closing app.')
+        root.update()
+        time.sleep(3)
+        root.destroy()                                      # Testing stop options
     elif 'Request' in pingresult:
-        print(ipAddress+ ' is Offline')
-        pingLine.config(text=ipAddress+' is Offline', font=(60), fg='red')
-        logging.info(ipAddress+' is Offline')
-        sys.exit(0)                                         # Stop program if IP does not ping
-        logging.info('App Stopped')                         #Add a logging event to App Stop
+        pingLine.config(text=ipAddress+' is offline', font=(60), fg='red')
+        allDone.config(text='App is closing',font=(60))
+        logging.info(ipAddress+' is offline, closing app.')
+        root.update()
+        time.sleep(3)
+        root.destroy()                                      # Testing stop options
     else:
-        print(ipAddress+ ' is Online')
         pingLine.config(text=ipAddress+' is Online', font=(60), fg='green')
         logging.info(ipAddress+' is Online')
-    root.update()                                           # Screen refresh
-    # Start iterating through ports
+        root.update()                                       # Screen refresh
+# Start iterating through ports
+    logging.info('Ports being tested')                      # Log ports being tested
+    logging.info(portList)                                  # Log ports being tested
     for portNum in portList:
         sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)        # Set up socket (port) testing
         sock.settimeout(5)                                  # Reduce timeout to 5 seconds
@@ -63,7 +63,7 @@ def show_button_action(*args):                              # Action for button 
             resultText.insert(END,'Port ' + portNum + ' is closed\n')   # Adding output to text field and send newline
             root.update()                                   # Screen refresh
             time.sleep(1)                                   # Pause for 1 second
-    allDone.config(text='Port check complete',font=(60),fg='blue')    # Insert a comment that program is done
+    allDone.config(text='Port check complete',font=(60),fg='blue')      # Insert a comment that program is done
 
 # Set up GUI...
 root=Tk()                                                   # Build standard window object called root
@@ -94,13 +94,12 @@ global portList                                             # Make portList glob
 portList = open('portList.txt').read().splitlines()         # To open PC file
 get_IP.focus()                                              # Makes the text entry field 'active' for input
 root.mainloop()                                             #Launch window and start event listening
-logging.info('App Stopped')                                 #Add a logging event to App Stop
 
+logging.info('App Stopped')                                 #Add a logging event to App Stop
 # Post results to Dropbox
 token = open('access_token.txt','r+')                       # Open file containing access code for read/write
 access_token=token.read()                                   # Assign file contents to variable
 dbx = dropbox.Dropbox(access_token)                         # Pass access token to Dropbox
+dbx.files_delete_v2('/results.log')                         # Delete previous version uploaded
 with open("results.log", "rb") as f:                        # Start upload of file contents
     dbx.files_upload(f.read(), '/results.log', mute = True)
-
-
