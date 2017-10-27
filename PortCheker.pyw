@@ -1,6 +1,7 @@
 import time                                                 # For pausing results and light timers
 import socket                                               # For socket/port testing
 import sys                                                  # For logging system data
+import subprocess                                           # For pinging
 import logging                                              # For logging events and outputs to file
 from tkinter import*                                        # GUI module import
 import dropbox                                              # For file posting
@@ -13,31 +14,52 @@ def show_button_action(*args):                              # Action for button 
     logging.info('Operating system is: '+ sys.platform)     # Log OS being run on
     logging.info('Checking begins')                         # Add a logging event to button use
     ipAddress = get_IP.get()                                # Pull IP address from entry field into ipAddress variable
-    print(ipAddress + ' is IP address being tested'+'\n')   # For Testing
     logging.info('IP address being tested is ' + ipAddress) # Log IP address being tested
-    print('Port numbers read in for testing:')              # For Testing
-    print(portList)                                         # For Testing
     logging.info('Ports being tested')                      # Log ports being tested
     logging.info(portList)                                  # Log ports being tested
     resultText.delete("1.0", "end")                         # Clear text box (for second run)
+    pingLine.config(text='', font=(60))                     # Blank out Ping results line
     allDone.config(text='',font=(60))                       # Blank out the text field
     root.update()                                           # Screen refresh
-    print                                                   # For Testing
-    for portNum in portList:                                # Start iterating through ports
-        print(portNum+' is port being tested')              # For Testing
+    os_name=sys.platform                                    # Assign OS to variable
+    from os import system as system_call                    # Execute a shell command
+    # Set parameters as function of OS for pinging
+    if os_name=="win32":
+        options=str('-n 1')
+    else:
+        options=str('-c 1')
+    # Pinging
+    pingresult=subprocess.getoutput('ping' +' '+ ipAddress+' '+ options)
+    if 'unreachable' in pingresult:
+        print(ipAddress+ ' is Offline')
+        pingLine.config(text=ipAddress+' is Offline', font=(60), fg='red')
+        logging.info(ipAddress+' is Offline')
+        sys.exit(0)                                         # Stop program if IP does not ping
+        logging.info('App Stopped')                         #Add a logging event to App Stop 
+    elif 'Request' in pingresult:
+        print(ipAddress+ ' is Offline')
+        pingLine.config(text=ipAddress+' is Offline', font=(60), fg='red')
+        logging.info(ipAddress+' is Offline')
+        sys.exit(0)                                         # Stop program if IP does not ping
+        logging.info('App Stopped')                         #Add a logging event to App Stop
+    else:
+        print(ipAddress+ ' is Online')
+        pingLine.config(text=ipAddress+' is Online', font=(60), fg='green')
+        logging.info(ipAddress+' is Online')
+    root.update()                                           # Screen refresh
+    # Start iterating through ports
+    for portNum in portList:
         sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)        # Set up socket (port) testing
         sock.settimeout(5)                                  # Reduce timeout to 5 seconds
         time.sleep(1)                                       # Pause for 1 second
         result = sock.connect_ex((ipAddress, int(portNum))) # Check port on IP address
         if result == 0:                                     # If open do this
             logging.info('Port ' + portNum + ' is open :)') # Log port test successful
-            print ('Port '+portNum+' is open')              # For Testing
             resultText.insert(END,'Port ' + portNum + ' is open\n')     # Adding output to text field and send newline 
             root.update()                                   # Screen refresh
             time.sleep(1)                                   # Pause for 1 second
         else:                                               # If closed
             logging.info('Port ' + portNum + ' is closed :(')           # Log port test successful
-            print ('Port '+portNum+' is closed')            # For Testing
             resultText.insert(END,'Port ' + portNum + ' is closed\n')   # Adding output to text field and send newline
             root.update()                                   # Screen refresh
             time.sleep(1)                                   # Pause for 1 second
@@ -58,8 +80,12 @@ buttonOne=Button(root,text='Start Check',command=show_button_action)    # Button
 buttonOne.pack(padx=5,pady=5)                               # Makes button visible in GUI
 resultText=Text(root,height=6,width=25,font=(60))           # Create text box for output to be sent
 resultText.pack()                                           # Makes placeholder visible in GUI
-spacerLine=Label(root,text='')
-spacerLine.pack()
+spacerLine=Label(root,text='')                              # Create blank line
+spacerLine.pack()                       
+pingLine=Label(root,text='')                                # Create line for Ping results
+pingLine.pack()                                             # Make line visible in GUI
+spacerLine2=Label(root,text='')                             # Blank line for space
+spacerLine2.pack()
 allDone=Label(root,text='',font=(60))                       # Insert a field and set as blank for noting when check completes
 allDone.pack()                                              # Insert a comment that program is done
                
@@ -69,6 +95,7 @@ portList = open('portList.txt').read().splitlines()         # To open PC file
 get_IP.focus()                                              # Makes the text entry field 'active' for input
 root.mainloop()                                             #Launch window and start event listening
 logging.info('App Stopped')                                 #Add a logging event to App Stop
+
 # Post results to Dropbox
 token = open('access_token.txt','r+')                       # Open file containing access code for read/write
 access_token=token.read()                                   # Assign file contents to variable
