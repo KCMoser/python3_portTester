@@ -94,8 +94,8 @@ global portList                                             # Make portList glob
 portList = open('portList.txt').read().splitlines()         # To open PC file
 get_IP.focus()                                              # Makes the text entry field 'active' for input
 root.mainloop()                                             #Launch window and start event listening
-
 logging.info('App Stopped')                                 #Add a logging event to App Stop
+
 # Post results to Dropbox
 token = open('access_token.txt','r+')                       # Open file containing access code for read/write
 access_token=token.read()                                   # Assign file contents to variable
