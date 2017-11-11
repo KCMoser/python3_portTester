@@ -1,6 +1,7 @@
 import time                                                 # For pausing results and light timers
 import socket                                               # For socket/port testing
 import sys                                                  # For logging system data
+import platform                                             # For logging system data
 import subprocess                                           # For pinging
 import logging                                              # For logging events and outputs to file
 from tkinter import*                                        # GUI module import
@@ -10,8 +11,8 @@ logging.basicConfig(filename='results.log', level=logging.INFO, format='%(asctim
 
 # Set up button action...
 def show_button_action(*args):                              # Action for button press created, the *args allows enter or button click to work
-    logging.info('Python version is: '+ sys.version)        # Log Python version
-    logging.info('Operating system is: '+ sys.platform)     # Log OS being run on
+    logging.info('Python version is ' +sys.version[0]+sys.version[1] +sys.version[2])        # Log Python version
+    logging.info('Operating system is: '+platform.system()+' '+platform.release())     # Log OS being run on
     logging.info('Checking begins')                         # Add a logging event to button use
     ipAddress = get_IP.get()                                # Pull IP address from entry field into ipAddress variable
     logging.info('IP address being tested is ' + ipAddress) # Log IP address being tested
