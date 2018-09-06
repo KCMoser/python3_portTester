@@ -5,7 +5,7 @@ import platform                                             # For logging system
 import subprocess                                           # For pinging
 import logging                                              # For logging events and outputs to file
 from tkinter import*                                        # GUI module import
-import dropbox                                              # For file posting online
+#import dropbox                                              # For file posting online
 # Set up timestamp and logfile name...
 logging.basicConfig(filename='results.log', level=logging.INFO, format='%(asctime)s %(message)s', datefmt='%m/%d/%Y %I:%M:%S %p')
 
@@ -98,9 +98,9 @@ root.mainloop()                                             #Launch window and s
 logging.info('App Stopped')                                 #Add a logging event to App Stop
 
 # Post results to Dropbox
-token = open('access_token.txt','r+')                       # Open file containing access code for read/write
-access_token=token.read()                                   # Assign file contents to variable
-dbx = dropbox.Dropbox(access_token)                         # Pass access token to Dropbox
-dbx.files_delete_v2('/results.log')                         # Delete previous version uploaded
-with open("results.log", "rb") as f:                        # Start upload of file contents
-    dbx.files_upload(f.read(), '/results.log', mute = True)
+#token = open('access_token.txt','r+')                       # Open file containing access code for read/write
+#access_token=token.read()                                   # Assign file contents to variable
+#dbx = dropbox.Dropbox(access_token)                         # Pass access token to Dropbox
+#dbx.files_delete_v2('/results.log')                         # Delete previous version uploaded
+#with open("results.log", "rb") as f:                        # Start upload of file contents
+#    dbx.files_upload(f.read(), '/results.log', mute = True)
